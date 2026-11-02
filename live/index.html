@@ -1167,7 +1167,7 @@ function workOrderEditor(editing=false){
  </div>
  <input type="file" id="woAttachmentPicker" hidden multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.txt,.csv,image/*" onchange="TMS.woFilesChosen(event)">
  <div class="wo-scroll-region" id="woScrollRegion"><div class="wo-upper"><div class="wo-info"><div class="dept-section" style="margin:-8px -8px 10px">WORK ORDER INFORMATION</div>
- ${info('id','WO No',number,'text','readonly required')}${info('po','PO No',v.po||'')}${info('opened','WO Date',v.opened||today(),'date','required')}${info('caseOwner','Case Owner',v.caseOwner||'')}${info('completedDate','Completed Date',v.completedDate||'','date')}<div class="wo-field"><label>Charge To</label><select class="dept-select" name="driverType">${['Unassigned','Company Driver','Lease Driver','Owner Operator','Contractor Operator'].map(x=>`<option value="${x}" ${String(v.driverType||'Unassigned')===x?'selected':''}>${x}</option>`).join('')}</select></div><div class="wo-field"><label title="Responsible Party">Resp. Party</label><select class="dept-select" name="responsibleParty"><option value="">-- Select --</option>${v44RpOptions(v.responsibleParty).map(x=>`<option value="${esc(x)}" ${String(v.responsibleParty||'')===x?'selected':''}>${esc(x)}</option>`).join('')}<option value="__split">50/50 Split</option><option value="__custom">✎ Custom…</option></select></div>
+ ${info('id','WO No',number,'text','readonly required')}${info('po','PO No',v.po||'')}${info('opened','WO Date',v.opened||today(),'date','required')}${info('caseOwner','Case Owner',v.caseOwner||'')}${info('completedDate','Completed Date',v.completedDate||'','date')}<div class="wo-field"><label>Charge To</label><select class="dept-select" name="driverType">${['Unassigned','Company Driver','Lease Driver','Owner Operator','Contractor Operator'].map(x=>`<option value="${x}" ${String(v.driverType||'Unassigned')===x?'selected':''}>${x}</option>`).join('')}</select></div><div class="wo-field"><label title="Responsible Party">Resp. Party</label><select class="dept-select" name="responsibleParty"><option value="">-- Select --</option>${v44RpOptions(v.responsibleParty).map(x=>`<option value="${esc(x)}" ${String(v.responsibleParty||'')===x?'selected':''}>${esc(x)}</option>`).join('')}<option value="__split">Custom Split…</option><option value="__custom">✎ Custom…</option></select></div>
  ${info('unit','Truck No',v.unit||'','select','required')}${info('vendor','Serviced By',v.vendor||'')}${info('authorized','Authorized By',v.authorized||'')}${info('odom','Odometer',v.odom||'','number')}
  <div class="wo-field"><label>Status</label><select class="dept-select" name="status"><option value="Open" ${v.status!=='Completed'?'selected':''}>Open</option><option value="Completed" ${v.status==='Completed'?'selected':''}>Completed</option></select></div>
  </div><div class="wo-problem"><label for="wo_problem">Description of Problems or Condition</label><textarea name="problem" id="wo_problem" aria-label="Description of Problems or Condition">${esc(v.problem||'')}</textarea><label for="wo_notes">Notes</label><textarea id="wo_notes" name="notes" aria-label="Notes">${esc(v.notes||'')}</textarea></div></div>
@@ -2099,7 +2099,7 @@ document.addEventListener('click',function(e){
  if(!mdiWindows.has(mdi.dataset.mdiKey))return;
  const ck=mdi.dataset.mdiKey||'';if(/^(cit-(edit|ie)|drv-ed):/.test(ck))return;if(ck==='mvr'){e.preventDefault();e.stopImmediatePropagation();window.v98Refresh&&window.v98Refresh(button);return;}if(/^new-files:/.test(ck)){e.preventDefault();e.stopImmediatePropagation();window.v95Act&&window.v95Act(ck.slice(10),'refresh');return;}if(/^drv-files:/.test(ck)){e.preventDefault();e.stopImmediatePropagation();window.V87&&V87.filesRefresh(ck.slice(10));return;}if(/^cit-if:/.test(ck)){e.preventDefault();e.stopImmediatePropagation();window.V82&&V82.filesRefresh(ck.slice(7));return;}if(/^cit-files:/.test(ck)){e.preventDefault();e.stopImmediatePropagation();window.V80&&V80.filesRefresh(ck.slice(10));return;}
  e.preventDefault();e.stopImmediatePropagation();
- if(ck==='hr'&&window.V87){V87.sel='';try{v87Dedupe();}catch(_){}}if(ck==='citations'&&window.V80)V80.sel='';if(ck==='inspections'&&window.V82)V82.sel='';try{window.v85Unsel&&window.v85Unsel();}catch(_){}
+ if(ck==='maintreports'){try{const s0=v31State('maintreports');s0.xsel=[];s0.xlast=null;}catch(_){}} if(ck==='hr'&&window.V87){V87.sel='';try{v87Dedupe();}catch(_){}}if(ck==='citations'&&window.V80)V80.sel='';if(ck==='inspections'&&window.V82)V82.sel='';try{window.v85Unsel&&window.v85Unsel();}catch(_){}
  v7RefreshWindow(mdi.dataset.mdiKey,button);
 },true);
 
@@ -4214,7 +4214,7 @@ v9DetailsHtml=function(wo){
    if(wo.status==='Completed'&&(label.includes('edit work order')||label.includes('add service')||label.includes('complete wo')))button.remove();
   }
   if(wo.status==='Completed'){
-   const b=document.createElement('button');b.type='button';b.className='v28-ibtn';b.setAttribute('aria-label','Reopen Work Order');b.innerHTML='<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#e08a1e" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12a7.5 7.5 0 1 0 2.4-5.5"/><path d="M4 3.5V9h5.5"/></svg>';b.title='Reopen Work Order';
+   const b=document.createElement('button');b.type='button';b.className='v28-ibtn';b.setAttribute('aria-label','Reopen Work Order');b.innerHTML='<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#e08a1e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 12a8.5 8.5 0 1 0 2.6-6.1"/><path d="M3 4v4.5h4.5"/><path d="M12 7.5V12l3 2"/></svg>';b.title='Reopen Work Order';
    b.setAttribute('onclick',`TMSV21.reopen('${String(wo.id).replace(/'/g,'&#39;')}')`);
    if(v16ReadOnlyWO(wo.id)){b.disabled=true;b.title='Read-only: another user has this Work Order open';}
    bar.insertBefore(b,bar.querySelector('span[style*="margin-left:auto"]')||null);
@@ -4982,7 +4982,7 @@ function v33RpBlock(rows){
   else if(r.rp&&r.rp!=='__custom')add(r.rp,r.amount);else none+=r.amount;});
  const opts=[...v44RpStd,...[...tot.keys()].filter(x=>!v44RpStd.includes(x))];
  let out=opts.map(o=>`        • ${o} → ${m(tot.get(o)||0)}`).join('\n')+(none>0?`\n        • Not selected → ${m(none)}`:'');
- if(pairs.size){out+=`\n\n        50/50 Splits (each party pays half; included in the totals above)\n`+[...pairs.entries()].map(([k,o])=>{const sp=v72Split(k);return `        • ${sp[0]} + ${sp[1]} → ${o.n} work order${o.n===1?'':'s'}, ${m(o.amt)}\n                     ${sp[0]} pays ${m(o.p[0])}  |  ${sp[1]} pays ${m(o.p[1])}`;}).join('\n');}
+ if(pairs.size){out+=`\n\n        Split work orders (included in the totals above)\n`+[...pairs.entries()].map(([k,o])=>{const sp=v72Split(k);return `        • ${sp[0]} + ${sp[1]} → ${o.n} work order${o.n===1?'':'s'}, ${m(o.amt)}\n                     ${sp[0]} pays ${m(o.p[0])}  |  ${sp[1]} pays ${m(o.p[1])}`;}).join('\n');}
  return out;
 }
 function v33Text(kind,s){
@@ -5054,7 +5054,7 @@ try{if(window.MDI)window.MDI.open=mdiOpen;}catch(e){}
 
 // ===== V35: completion date is stamped when a work order becomes Completed; reports use it =====
 const v35St=new Map();
-function v35Date(w){const o=String(w.opened||'');return w.status==='Completed'?String(w.completedDate||o):o;}
+function v35Date(w){const o=String(w.opened||'');if(w.status!=='Completed')return o;const ds=(w.lines||[]).map(l=>{let x=String(l.serviceDate||'').trim();if(!/^\d{4}-\d\d-\d\d/.test(x)){try{x=typeof v19Iso==='function'?v19Iso(x):x;}catch(e){}}return String(x||'').slice(0,10);}).filter(x=>/^\d{4}-\d\d-\d\d$/.test(x)).sort();return ds.length?ds[ds.length-1]:String(w.completedDate||o);}
 function v35Snap(){v35St.clear();(db.workorders||[]).forEach(w=>v35St.set(String(w.id),w.status));}
 function v35Tick(){
  try{
@@ -9464,7 +9464,7 @@ function v87Row(d){const id=esc(d.id),pay=d.payType==='Percentage'?(d.payRate?d.
  return `<tr class="${V87.sel===d.id?'v80-sel selected':''}" data-id="${id}" onclick="V87.pick('${id}')" ondblclick="V87.edit('${id}')"><td class="v87-n"><b>${esc(full)}</b></td><td class="v80-c" title="${esc(d.type||'')}"><b class="v87-ty">${esc(v87TypeLbl(d))}</b></td><td class="v80-c"><span class="v87-st s-${esc(String(d.status||'').toLowerCase().replace(/\s/g,''))}">${esc(d.status||'')}</span></td><td class="v80-c">${esc(v87Ph(d.phone))}</td><td class="v80-c">${esc(d.cdlNo||'')}</td><td class="v80-c">${esc(d.state||'')}</td>${v87Ex(d.cdl,d.status)}${v87Ex(d.med,d.status)}<td class="v87-d">${esc(v87US(d.hire))}</td><td class="v80-c">${esc(pay)}</td>${v87BdTd(d.dob,d.status)}${v87BdDays(d.dob,d.status)}</tr>`;}
 function v87Shell(){const o=['All','Active','Inactive','Home Time','Expiring / expired'].map(x=>`<option>${x}</option>`).join(''),ot=['All',...v87TypeOpts].map(x=>`<option>${x}</option>`).join('');
  return `<div class="v80-root" id="v87Root"><div class="v5-commandbar"><button type="button" class="v5-ctrl" onclick="V87.refresh()" title="Refresh">Refresh</button><button type="button" class="v5-ctrl" onclick="V87.add()" title="Add">Add</button><button type="button" class="v5-ctrl v30-cbi" data-v30cb="1" onclick="document.getElementById('v87File').click()" title="Import drivers from an Excel (.xlsx) or CSV file" aria-label="Import"><svg class="pcs-icon" aria-hidden="true"><use href="#pcs-download"></use></svg></button><input type="file" id="v87File" accept=".xlsx,.csv" style="display:none" onchange="V87.imp(this)"><label>Status: <select class="v5-filter" id="v87Filter" onchange="V87.setFilter(this.value)">${o}</select></label><label>Type: <select class="v5-filter" id="v87Type" onchange="V87.setType(this.value)">${ot}</select></label><label>Search: <input class="v5-filter" id="v87Search" placeholder="Search name, phone, CDL #…" oninput="V87.setSearch(this.value)"></label><span id="v87Count" class="v80-count"></span><span class="v5-grow"></span>${(typeof v9IsMaster==='function'&&v9IsMaster())?'<button type="button" class="v5-ctrl" onclick="V87.dedupeNow()" title="Merge duplicate drivers (admin)">Merge duplicates</button><button type="button" class="v5-ctrl" style="color:#b3261e" onclick="V87.clearAll()" title="Delete every driver (admin)">Clear all drivers</button>':''}<button type="button" class="v5-ctrl" onclick="TMSV5.print()" title="Print">Print</button></div><div class="v80-scroll"><table class="v80-t v87-t"><thead><tr><th class="v87-hd2" data-k="name"><span class="v87-hl">DRIVER</span></span></th><th data-k="type">TYPE</th><th data-k="status">STATUS</th><th data-k="phone">PHONE</th><th data-k="cdlNo">CDL #</th><th data-k="state">CDL ST</th><th data-k="cdl">CDL EXPIRES</th><th data-k="med">MED EXPIRES</th><th data-k="hire">HIRED</th><th data-k="pay">PAY</th><th data-k="dob">DOB</th><th data-k="bday">BIRTHDAY IN</th></tr></thead><tbody id="v87Body"></tbody></table></div></div>`;}
-const APP_BUILD='1.0.390';
+const APP_BUILD='1.0.396';
 function v87Fill(){const root=document.getElementById('v87Root');if(!root)return;try{v87Dedupe();}catch(e){}const rows=v87Vis();document.getElementById('v87Count').textContent=rows.length+' record(s)';
  root.querySelectorAll('thead [data-k]').forEach(e=>{const on=e.dataset.k===V87.sort.k;e.classList.toggle('v87-on',on);e.classList.toggle('asc',on&&V87.sort.dir===1);e.classList.toggle('desc',on&&V87.sort.dir===-1);e.querySelectorAll('.v87-ar').forEach(x=>x.remove());if(false){const a=document.createElement('b');a.className='v87-ar';a.textContent=V87.sort.dir===1?'▲':'▼';const rz=e.querySelector('.v80-rz');e.insertBefore(a,rz||null);}});
  const v87b=document.getElementById('v87Body');v87b.innerHTML=rows.length?rows.map(v87Row).join(''):`<tr><td colspan="13" class="v80-empty">No drivers${V87.search?' match your search':''}. Click Add, or Import to load a driver list.</td></tr>`;{const seen=new Set();v87b.querySelectorAll('tr[data-id]').forEach(r=>{if(seen.has(r.dataset.id))r.remove();else seen.add(r.dataset.id);});}}
@@ -10616,18 +10616,18 @@ window.addEventListener('click',e=>{const b=e.target&&e.target.closest&&e.target
  const ok=r=>r.querySelector('td')&&!r.querySelector('td[colspan]')&&r.offsetParent!==null;
  const rowsOf=tb=>[...tb.children].filter(r=>r.tagName==='TR'&&ok(r));
  const clear=tb=>{tb.querySelectorAll('tr.v114-ms').forEach(r=>msSet(r,0));};
- const wipeOld=tb=>{(tb.closest('.mdi-child')||tb).querySelectorAll('tr.selected,tr.v92-rsel,tr.v114-ms').forEach(r=>{r.classList.remove('selected','v92-rsel');msSet(r,0);});try{S92.sel='';}catch(e){}try{V87.sel='';}catch(e){}try{V80.sel='';}catch(e){}try{V82.sel='';}catch(e){}};
+ const wipeOld=tb=>{try{window.__v85Clear&&window.__v85Clear();}catch(e){}(tb.closest('.mdi-child')||tb).querySelectorAll('tr.selected,tr.v92-rsel,tr.v114-ms').forEach(r=>{r.classList.remove('selected','v92-rsel');msSet(r,0);});try{S92.sel='';}catch(e){}try{V87.sel='';}catch(e){}try{V80.sel='';}catch(e){}try{V82.sel='';}catch(e){}};
  const inter='button,select,textarea,input,a,label,[contenteditable],.v92-cp,th';
  const rowAt=(rows,y)=>{let best=rows[0],bd=1e9;for(const r of rows){const b=r.getBoundingClientRect();if(y>=b.top&&y<=b.bottom)return r;const d=Math.min(Math.abs(y-b.top),Math.abs(y-b.bottom));if(d<bd){bd=d;best=r;}}return best;};
  const scroller=el=>{for(let n=el;n&&n!==document.body;n=n.parentElement){const s=getComputedStyle(n);if(/(auto|scroll)/.test(s.overflowY)&&n.scrollHeight>n.clientHeight+2)return n;}return null;};
- document.addEventListener('mousedown',e=>{st=null;drag=false;if(e.button!==0)return;const t=e.target;if(!t||!t.closest||t.closest(inter))return;const tr=t.closest('tr'),tb=tr&&tr.parentElement;if(!tr||!tb||tb.tagName!=='TBODY'||!tr.closest('.mdi-child')||tr.closest('form'))return;
+ document.addEventListener('mousedown',e=>{st=null;drag=false;if(e.button!==0)return;const t=e.target;if(!t||!t.closest||t.closest(inter))return;const tr=t.closest('tr'),tb=tr&&tr.parentElement;if(!tr||!tb||tb.tagName!=='TBODY'||!tr.closest('.mdi-child')||tr.closest('form')||tr.closest('#v33eTbl'))return;
   const rows=rowsOf(tb),i=rows.indexOf(tr);if(i<0)return;st={tb,rows,i,sc:scroller(tb),y:e.clientY,x:e.clientX};},true);
  document.addEventListener('mousemove',e=>{if(!st)return;if(!(e.buttons&1)){st=null;return;}
   if(!drag){if(Math.abs(e.clientY-st.y)<5)return;drag=true;wipeOld(st.tb);try{getSelection().removeAllRanges();}catch(x){}}
   if(st.sc){const b=st.sc.getBoundingClientRect();if(e.clientY<b.top+26)st.sc.scrollTop-=18;else if(e.clientY>b.bottom-26)st.sc.scrollTop+=18;}
   const cur=rowAt(st.rows,e.clientY),j=st.rows.indexOf(cur),a=Math.min(st.i,j),z=Math.max(st.i,j);
   st.rows.forEach((r,k)=>msSet(r,k>=a&&k<=z));e.preventDefault();},true);
- document.addEventListener('mouseup',()=>{if(drag){sup=true;setTimeout(()=>{sup=false;},80);}st=null;drag=false;},true);
+ document.addEventListener('mouseup',()=>{if(drag){window.__v33drag=Date.now();sup=true;setTimeout(()=>{sup=false;},80);try{window.__v114Save&&st&&window.__v114Save(st.tb);}catch(e){}}st=null;drag=false;},true);
  document.addEventListener('click',e=>{if(sup){e.stopImmediatePropagation();e.preventDefault();return;}
   const t=e.target;if(!t||!t.closest)return;const win=t.closest('.mdi-child');if(!win)return;
   const tr=t.closest('tr.v114-ms');
@@ -10637,7 +10637,7 @@ window.addEventListener('click',e=>{const b=e.target&&e.target.closest&&e.target
  },true);
  /* "N selected" sits right under the "N record(s)" text of the window (falls back to the title bar when a window has none) */
  const recEl=w=>{if(w._v114rc&&w._v114rc.isConnected)return w._v114rc;let f=null;const re=/^\s*[\d,]+\s+record(s|\(s\))?\s*$/i;w.querySelectorAll('span,div,label,small,em,b').forEach(el=>{if(f)return;if(el.closest('.mdi-title'))return;if(re.test(el.textContent||'')&&![...el.children].some(c=>re.test(c.textContent||'')))f=el;});w._v114rc=f;return f;};
- setInterval(()=>{try{document.querySelectorAll('.mdi-child').forEach(w=>{const n=w.querySelectorAll('tbody tr.v114-ms').length||w.querySelectorAll('tbody tr.selected,tbody tr.v92-rsel').length;const txt=n+' selected';
+ setInterval(()=>{try{document.querySelectorAll('.mdi-child').forEach(w=>{if(w.querySelector('#v33eTbl')){w.querySelectorAll('.v114-tt,.v114-sc').forEach(x=>x.remove());return;}const n=w.querySelectorAll('tbody tr.v114-ms').length||w.querySelectorAll('tbody tr.selected,tbody tr.v92-rsel').length;const txt=n+' selected';
    const rec=recEl(w),tt=w.querySelector('.mdi-title-text');let old=tt&&tt.querySelector('.v114-tt');if(old)old.remove();
    if(rec){let s=rec.querySelector(':scope>.v114-sc');
     if(!n){if(s)s.remove();rec.classList.remove('v114-has');return;}
@@ -10869,7 +10869,7 @@ function v33eRows(s){const eq=s.xeq==='Trailer'?'Trailer':'Truck';const V=n=>{co
   return {owner:String(w.caseOwner||''),open:String(w.opened||''),date:dt,id:String(w.id),truck:tr?(P.truck||''):String(w.unit||''),trailer:tr?String(w.unit||''):(P.trailer||''),driver:String(drv).toUpperCase(),shop:String(w.vendor||P.shop||''),loc:P.loc||[v&&v.city,v&&v.st].filter(Boolean).join(', '),rep:P.rep||(v?String(v.contact||''):''),phone:P.phone||(v?String(v.phone||''):''),total:woTotal(w),pay:P.pay,rp:String(w.responsibleParty||''),issue:P.issue};})
  .filter(r=>(!s.from||r.date>=s.from)&&(!s.to||r.date<=s.to)).sort((a,b)=>String(a.date).localeCompare(String(b.date))||(+a.id||0)-(+b.id||0));}
 function v33eSum(rows,key){const m=new Map();rows.forEach(r=>{const k=key(r);if(!k)return;const o=m.get(k)||{n:0,t:0};o.n++;o.t+=r.total;m.set(k,o);});return [...m.entries()].sort((a,b)=>b[1].t-a[1].t);}
-const V33E_DEF=[['id','WO #',56],['opened','Opened',74],['done','Completed',74],['trailer','Trailer',72],['truck','Truck',72],['driver','Driver',140],['shop','Shop',180],['loc','Location',190],['rep','Representative',120],['phone','Phone',112],['total','Total',84],['rp','Resp. party',96],['issue','Issue',260]];
+const V33E_DEF=[['id','WO #',56],['opened','Opened',74],['done','Serviced',74],['trailer','Trailer',72],['truck','Truck',72],['driver','Driver',140],['shop','Shop',180],['loc','Location',190],['rep','Representative',120],['phone','Phone',112],['total','Total',84],['rp','Resp. party',96],['issue','Issue',260]];
 function v33ePrefs(){let p={};try{p=JSON.parse(localStorage.getItem('pcsExpCols')||'{}')||{};}catch(e){}p.hide=p.hide||{};p.w=p.w||{};return p;}
 function v33eSavePrefs(p){try{localStorage.setItem('pcsExpCols',JSON.stringify(p));}catch(e){}}
 function v33eVis(){const p=v33ePrefs();return V33E_DEF.filter(c=>!p.hide[c[0]]).map(c=>({k:c[0],l:c[1],w:p.w[c[0]]||c[2]}));}
@@ -10887,13 +10887,13 @@ function v33eView(){const s=v31State('maintreports');if(!s.xinit){s.xinit=1;s.pr
  const rows=v33eRows(s),tot=rows.reduce((a,r)=>a+r.total,0),tr=s.xeq==='Trailer',V=v33eVis(),pf=v33ePrefs();
  const chip=(p,l)=>`<button type="button" class="v33-chip ${s.preset===p?'on':''}" onclick="TMSV33E.chip('${p}')">${l}</button>`;
  const keyf={rp:r=>r.rp||'Unassigned',unit:r=>tr?r.trailer:r.truck,shop:r=>r.shop}[s.xsum];
- let list;if(s.xsum==='drv'){list=v33eDrvList(rows);}else list=v33eSum(rows,keyf);
+ let list;if(s.xsum==='drv'){list=v33eDrvList(rows);}else list=s.xsum==='rp'?v33eRpList(rows):v33eSum(rows,keyf);
  const opt=(v,l)=>`<option value="${v}" ${s.xsum===v?'selected':''}>${l}</option>`;
- const foot=`<div class="v33e-foot"><span>Totals by</span><select onchange="TMSV33E.sum(this.value)">${opt('rp','Resp. party')}${opt('unit',tr?'Trailer':'Truck')}${tr?'':opt('drv','Driver')}${opt('shop','Shop')}</select>${list.slice(0,12).map(([k,o])=>`<i>${esc(k)} <b>${money(o.t)}</b>${o.n>1?' <u>×'+o.n+'</u>':''}</i>`).join('')}${list.length>12?'<i>…</i>':''}</div>`;
+ const foot=`<div class="v33e-foot"><span>Totals by</span><select onchange="TMSV33E.sum(this.value)">${opt('rp','Resp. party')}${opt('unit',tr?'Trailer':'Truck')}${tr?'':opt('drv','Driver')}${opt('shop','Shop')}</select>${list.filter(([k,o])=>Math.abs(o.t)>=0.005).slice(0,12).map(([k,o])=>`<i>${esc(k)} <b>${money(o.t)}</b>${o.n>1?' <u>×'+o.n+'</u>':''}</i>`).join('')}${list.filter(([k,o])=>Math.abs(o.t)>=0.005).length>12?'<i>…</i>':''}<span class="v33e-fr"><em class="v33e-fs" hidden></em><em class="v33e-fa">All <b>${money(tot)}</b></em></span></div>`;
  const eye=`<div class="fm-dd" id="v33eEye"><button type="button" class="v33e-ic" onclick="TMSV33E.menu(event)" title="Choose columns" aria-label="Choose columns">${FMI.eye}</button><div class="fm-menu wide" hidden onclick="event.stopPropagation()"><h5>Show in table</h5>${V33E_DEF.map(c=>`<label><input type="checkbox" ${pf.hide[c[0]]?'':'checked'} onchange="TMSV33E.col('${c[0]}',this.checked)"> ${c[1]}</label>`).join('')}<button type="button" class="rs" onclick="TMSV33E.reset()">Reset</button></div></div>`;
  const W=V.reduce((a,c)=>a+c.w,0)+34;const sel=new Set(s.xsel||[]);const nsel=rows.filter(r=>sel.has(r.id)).length;
- return `<div class="v33 v33x">${v33Tabs('expense')}<div class="v33e-bar"><div class="v33-chips"><button type="button" class="v33-chip ${!tr?'on':''}" onclick="TMSV33E.eq('Truck')">Trucks</button><button type="button" class="v33-chip ${tr?'on':''}" onclick="TMSV33E.eq('Trailer')">Trailers</button><span class="v33e-gap"></span>${chip('week','This week')}${chip('lastweek','Last week')}${chip('month','This month')}${chip('lastmonth','Last month')}</div><div class="v33-fields"><label>From<input type="date" value="${esc(s.from)}" onchange="TMSV33E.dt('from',this.value)"></label><label>To<input type="date" value="${esc(s.to)}" onchange="TMSV33E.dt('to',this.value)"></label></div><div class="v33e-rt"><div class="v33e-kp"><span>${rows.length} work order${rows.length===1?'':'s'}</span><b>${money(tot)}</b></div><button type="button" class="v33e-ic v33e-cb" id="v33eTb" onclick="TMSV33E.copy(this)" title="${nsel?'Copy selected rows as a table':'Copy table'}" aria-label="Copy table">${V33E_ICT}<i class="bd" ${nsel?'':'hidden'}>${nsel}</i></button><button type="button" class="v33e-ic v33e-cb" id="v33ePs" onclick="TMSV33E.pic(this)" title="${nsel?'Copy picture of selected rows':'Copy picture'}" aria-label="Copy picture">${V33E_ICP}<i class="bd" ${nsel?'':'hidden'}>${nsel}</i></button><span class="v33e-ig">${eye}<button type="button" class="v33e-ic" title="Refresh" aria-label="Refresh" onclick="TMSV33H.refresh()"><svg class="pcs-icon" aria-hidden="true"><use href="#pcs-refresh"></use></svg></button><button type="button" class="v33e-ic" title="Print" aria-label="Print" onclick="window.print()"><svg class="pcs-icon" aria-hidden="true"><use href="#pcs-print"></use></svg></button></span></div></div>
- <div class="v33e-wrap"><div class="v33e-scroll"><table class="v33e-t" id="v33eTbl" style="width:${W}px" data-title="Maintenance Expense Report — ${tr?'Trailers':'Trucks'}" data-range="Completed ${v33eFull(s.from)} to ${v33eFull(s.to)}" data-tl="${esc(({rp:'Responsible party',unit:tr?'Trailer':'Truck',drv:'Driver',shop:'Shop'})[s.xsum]||'')}" data-totals="${esc(JSON.stringify(list.map(([k,o])=>[k,o.n,o.t])))}" data-grand="${tot}" data-count="${rows.length}"><colgroup>${V.map(c=>`<col style="width:${c.w}px">`).join('')}<col style="width:34px"></colgroup><thead><tr>${V.map(c=>`<th data-k="${c.k}">${c.l}<span class="rz" onmousedown="TMSV33E.rz(event,'${c.k}')"></span></th>`).join('')}<th class="cp"></th></tr></thead><tbody>${rows.length?rows.map(r=>`<tr data-id="${esc(r.id)}" class="${sel.has(r.id)?'v33e-on':''}" onclick="TMSV33E.pick(event,'${esc(r.id)}')" ondblclick="TMSV9.openWO('${esc(r.id)}')">`+V.map(c=>`<td data-k="${c.k}" class="${c.k==='total'?'r nw':''}">${esc(v33eVal(r,c.k))}</td>`).join('')+`<td class="cp"><button type="button" class="v33e-rc" title="Copy this work order" aria-label="Copy this work order" onclick="event.stopPropagation();TMSV33E.copyRow(this,'${esc(r.id)}')">${FMI.copy||'<svg viewBox=\'0 0 24 24\' width=\'16\' height=\'16\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'2\'><rect x=\'9\' y=\'9\' width=\'11\' height=\'11\' rx=\'2\'/><path d=\'M5 15V6a2 2 0 0 1 2-2h9\'/></svg>'}</button></td></tr>`).join(''):`<tr><td colspan="${V.length+1}" class="v33m-no">No completed work orders in this period</td></tr>`}</tbody></table></div>${foot}</div></div>`;}
+ return `<div class="v33 v33x">${v33Tabs('expense')}<div class="v33e-bar"><div class="v33-chips"><button type="button" class="v33-chip ${!tr?'on':''}" onclick="TMSV33E.eq('Truck')">Trucks</button><button type="button" class="v33-chip ${tr?'on':''}" onclick="TMSV33E.eq('Trailer')">Trailers</button><span class="v33e-gap"></span>${chip('week','This week')}${chip('lastweek','Last week')}${chip('month','This month')}${chip('lastmonth','Last month')}</div><div class="v33-fields"><label>From<input type="date" value="${esc(s.from)}" onchange="TMSV33E.dt('from',this.value)"></label><label>To<input type="date" value="${esc(s.to)}" onchange="TMSV33E.dt('to',this.value)"></label></div><div class="v33e-rt"><div class="v33e-kp"><span>${rows.length} work order${rows.length===1?'':'s'}</span></div><button type="button" class="v33e-ic v33e-cb" id="v33eTb" onclick="TMSV33E.copy(this)" title="${nsel?'Copy selected rows as a table':'Copy table'}" aria-label="Copy table">${V33E_ICT}<i class="bd" ${nsel?'':'hidden'}>${nsel}</i></button><button type="button" class="v33e-ic v33e-cb" id="v33ePs" onclick="TMSV33E.pic(this)" title="${nsel?'Copy picture of selected rows':'Copy picture'}" aria-label="Copy picture">${V33E_ICP}<i class="bd" ${nsel?'':'hidden'}>${nsel}</i></button><span class="v33e-ig">${eye}<button type="button" class="v33e-ic" title="Refresh" aria-label="Refresh" onclick="TMSV33H.refresh()"><svg class="pcs-icon" aria-hidden="true"><use href="#pcs-refresh"></use></svg></button><button type="button" class="v33e-ic" title="Print" aria-label="Print" onclick="window.print()"><svg class="pcs-icon" aria-hidden="true"><use href="#pcs-print"></use></svg></button></span></div></div>
+ <div class="v33e-wrap"><div class="v33e-scroll"><table class="v33e-t" id="v33eTbl" style="width:${W}px" data-title="Maintenance Expense Report — ${tr?'Trailers':'Trucks'}" data-range="Serviced ${v33eFull(s.from)} to ${v33eFull(s.to)}" data-tl="${esc(({rp:'Responsible party',unit:tr?'Trailer':'Truck',drv:'Driver',shop:'Shop'})[s.xsum]||'')}" data-totals="${esc(JSON.stringify(list.map(([k,o])=>[k,o.n,o.t])))}" data-grand="${tot}" data-count="${rows.length}"><colgroup>${V.map(c=>`<col style="width:${c.w}px">`).join('')}<col style="width:34px"></colgroup><thead><tr>${V.map(c=>`<th data-k="${c.k}">${c.l}<span class="rz" onmousedown="TMSV33E.rz(event,'${c.k}')"></span></th>`).join('')}<th class="cp"></th></tr></thead><tbody>${rows.length?rows.map(r=>`<tr data-id="${esc(r.id)}" class="${sel.has(r.id)?'v33e-on':''}" onclick="TMSV33E.pick(event,'${esc(r.id)}')" ondblclick="TMSV9.openWO('${esc(r.id)}')">`+V.map(c=>`<td data-k="${c.k}" class="${c.k==='total'?'r nw':''}">${esc(v33eVal(r,c.k))}</td>`).join('')+`<td class="cp"><button type="button" class="v33e-rc" title="Copy this work order" aria-label="Copy this work order" onclick="event.stopPropagation();TMSV33E.copyRow(this,'${esc(r.id)}')">${FMI.copy||'<svg viewBox=\'0 0 24 24\' width=\'16\' height=\'16\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'2\'><rect x=\'9\' y=\'9\' width=\'11\' height=\'11\' rx=\'2\'/><path d=\'M5 15V6a2 2 0 0 1 2-2h9\'/></svg>'}</button></td></tr>`).join(''):`<tr><td colspan="${V.length+1}" class="v33m-no">No completed work orders in this period</td></tr>`}</tbody></table></div>${foot}</div></div>`;}
 window.TMSV33E_=1;window.TMSV33E={chip(p){const s=v31State('maintreports');s.preset=p;[s.from,s.to]=v31Range(p);v5Rerender('maintreports');},eq(e){v31State('maintreports').xeq=e;v5Rerender('maintreports');},sum(v){v31State('maintreports').xsum=v;v5Rerender('maintreports');},dt(k,v){const s=v31State('maintreports');s[k]=v;s.preset='custom';v5Rerender('maintreports');},
  menu(e){e.stopPropagation();const m=document.querySelector('#v33eEye .fm-menu');if(!m)return;m.hidden=!m.hidden;if(!m.hidden){const b=document.querySelector('#v33eEye .v33e-ic').getBoundingClientRect(),vw=window.innerWidth,vh=window.innerHeight,w=Math.min(240,vw-8);m.style.cssText='box-sizing:border-box;position:fixed;width:'+w+'px;min-width:0;right:auto;left:'+Math.max(4,Math.min(b.right-w,vw-w-4))+'px;top:'+(b.bottom+4)+'px;max-height:'+Math.max(120,vh-b.bottom-14)+'px;overflow:auto';const off=()=>{m.hidden=true;document.removeEventListener('click',off);};setTimeout(()=>document.addEventListener('click',off),0);}},
  col(k,on){const p=v33ePrefs();if(on)delete p.hide[k];else p.hide[k]=1;if(!V33E_DEF.some(c=>!p.hide[c[0]])){delete p.hide[k];}v33eSavePrefs(p);const m=document.querySelector('#v33eEye .fm-menu'),open=m&&!m.hidden;v5Rerender('maintreports');if(open){const m2=document.querySelector('#v33eEye .fm-menu');if(m2){m2.hidden=false;const off=()=>{m2.hidden=true;document.removeEventListener('click',off);};setTimeout(()=>document.addEventListener('click',off),0);}}},
@@ -10901,11 +10901,11 @@ window.TMSV33E_=1;window.TMSV33E={chip(p){const s=v31State('maintreports');s.pre
  rz(e,k){e.preventDefault();e.stopPropagation();const th=e.target.closest('th'),tbl=document.getElementById('v33eTbl');if(!th||!tbl)return;const idx=[...th.parentNode.children].indexOf(th),col=tbl.querySelectorAll('col')[idx];const x0=e.clientX,w0=th.offsetWidth,tw0=tbl.offsetWidth;
   const mv=ev=>{const w=Math.max(40,w0+ev.clientX-x0);col.style.width=w+'px';tbl.style.width=(tw0+w-w0)+'px';};
   const up=ev=>{document.removeEventListener('mousemove',mv);document.removeEventListener('mouseup',up);const p=v33ePrefs();p.w[k]=Math.max(40,w0+ev.clientX-x0);v33eSavePrefs(p);};document.addEventListener('mousemove',mv);document.addEventListener('mouseup',up);},
- pick(e,id){if(e.target.closest('button')||e.detail>1)return;const s=v31State('maintreports');const trs=[...document.querySelectorAll('#v33eTbl tbody tr[data-id]')],ids=trs.map(t=>t.dataset.id);let a=new Set(s.xsel||[]);
+ pick(e,id){if(e.target.closest('button')||e.detail>1||(window.__v33drag&&Date.now()-window.__v33drag<300))return;const s=v31State('maintreports');const trs=[...document.querySelectorAll('#v33eTbl tbody tr[data-id]')],ids=trs.map(t=>t.dataset.id);let a=new Set(s.xsel||[]);
   if(e.ctrlKey||e.metaKey){if(a.has(id))a.delete(id);else a.add(id);}
   else if(e.shiftKey&&s.xlast&&ids.includes(s.xlast)){const i=ids.indexOf(s.xlast),j=ids.indexOf(id);a=new Set(ids.slice(Math.min(i,j),Math.max(i,j)+1));try{window.getSelection().removeAllRanges();}catch(x){}}
   else{if(a.size===1&&a.has(id))a.clear();else a=new Set([id]);}
-  s.xsel=[...a];s.xlast=id;trs.forEach(t=>t.classList.toggle('v33e-on',a.has(t.dataset.id)));const n=a.size;[['v33eTb','Copy selected rows as a table','Copy table'],['v33ePs','Copy picture of selected rows','Copy picture']].forEach(([i,t1,t0])=>{const bt=document.getElementById(i);if(!bt)return;bt.title=n?t1:t0;const bd=bt.querySelector('.bd');if(bd){bd.hidden=!n;bd.textContent=n;}});},
+  s.xsel=[...a];s.xlast=id;trs.forEach(t=>t.classList.toggle('v33e-on',a.has(t.dataset.id)));const n=a.size;[['v33eTb','Copy selected rows as a table','Copy table'],['v33ePs','Copy picture of selected rows','Copy picture']].forEach(([i,t1,t0])=>{const bt=document.getElementById(i);if(!bt)return;bt.title=n?t1:t0;const bd=bt.querySelector('.bd');if(bd){bd.hidden=!n;bd.textContent=n;}});try{v33eUi(n);}catch(x){}},
  put(btn,rows){const V=v33eVis(),tsv=v33eText(rows,V);const clean=x=>esc(String(x==null?'':x).replace(/[\t\r\n]+/g,' ').trim());
   const val=(r,k)=>k==='opened'?v33eFull(r.open):k==='done'?v33eFull(r.date):v33eVal(r,k);
   const html='<table border="1" cellspacing="0" cellpadding="4" style="border-collapse:collapse;font-family:Tahoma,Arial;font-size:12px"><tr>'+V.map(c=>'<th style="background:#ececec;text-align:left">'+esc(c.l)+'</th>').join('')+'</tr>'+rows.map(r=>'<tr>'+V.map(c=>'<td>'+clean(val(r,c.k))+'</td>').join('')+'</tr>').join('')+'</table>';
@@ -10919,8 +10919,8 @@ window.TMSV33E_=1;window.TMSV33E={chip(p){const s=v31State('maintreports');s.pre
   const tot=rows.reduce((q,r)=>q+r.total,0);x.font=F;
   const W=V.map(c=>{let m=0;x.font=FB;m=x.measureText(c.l).width;x.font=F;rows.forEach(r=>{m=Math.max(m,x.measureText(val(r,c.k)).width);});return Math.min(Math.ceil(m)+14,c.k==='issue'?300:240);});
   const fit=(t,w)=>{x.font=F;if(x.measureText(t).width<=w-12)return t;while(t.length>1&&x.measureText(t+'…').width>w-12)t=t.slice(0,-1);return t+'…';};
-  const tw=W.reduce((q,w)=>q+w,0),title='Maintenance Expense Report — '+(s.xeq==='Trailer'?'Trailers':'Trucks'),range='Completed '+v33eFull(s.from)+' to '+v33eFull(s.to);
-  const tr0=s.xeq==='Trailer',kf={rp:r=>r.rp||'Unassigned',unit:r=>tr0?r.trailer:r.truck,shop:r=>r.shop}[s.xsum];let L;if(s.xsum==='drv'){L=v33eDrvList(rows);}else L=v33eSum(rows,kf);
+  const tw=W.reduce((q,w)=>q+w,0),title='Maintenance Expense Report — '+(s.xeq==='Trailer'?'Trailers':'Trucks'),range='Serviced '+v33eFull(s.from)+' to '+v33eFull(s.to);
+  const tr0=s.xeq==='Trailer',kf={rp:r=>r.rp||'Unassigned',unit:r=>tr0?r.trailer:r.truck,shop:r=>r.shop}[s.xsum];let L;if(s.xsum==='drv'){L=v33eDrvList(rows);}else L=s.xsum==='rp'?v33eRpList(rows):v33eSum(rows,kf);
   const TL='Totals by '+(({rp:'Responsible party',unit:tr0?'Trailer':'Truck',drv:'Driver',shop:'Shop'})[s.xsum]||'Responsible party');
   const TW=Math.max(tw,420),H=pad*2+44+rh*(rows.length+2)+18+rh*(L.length+2);cv.width=(TW+pad*2)*sc;cv.height=H*sc;x.scale(sc,sc);
   x.fillStyle=C.bg;x.fillRect(0,0,TW+pad*2,H);x.textBaseline='middle';x.textAlign='left';x.fillStyle=C.tx;x.font='bold 15px Tahoma,Arial,sans-serif';x.fillText(title+'   |   '+range,pad,pad+12);
@@ -10950,7 +10950,7 @@ window.TMSV33E_=1;window.TMSV33E={chip(p){const s=v31State('maintreports');s.pre
 body.v14-dark .v33tabs{background:#1a2431;border-color:#2b3b4d}body.v14-dark .v33tab{background:#223042;color:#cfd9e6;border-color:#2b3b4d}body.v14-dark .v33tab.on{background:#17212d;color:#fff}body.v14-dark .v33e-bar,body.v14-dark .v33e-wrap{background:#17212d;border-color:#2b3b4d}body.v14-dark .v33e-bar label,body.v14-dark .v33e-kp{color:#aebdce}body.v14-dark .v33e-kp b,body.v14-dark .v33e-foot i b{color:#8fb8ea}body.v14-dark .v33e-ic{color:#c4d3e6}body.v14-dark .v33e-t{background:#17212d;color:#e8eef5}body.v14-dark .v33e-scroll{border-color:#2b3b4d}body.v14-dark .v33e-t th{background:#243244;color:#e8eef5;border-color:#2b3b4d}body.v14-dark .v33e-t td{background:#17212d;border-color:#26364a}body.v14-dark .v33e-t tbody tr:nth-child(even) td{background:#1b2837}body.v14-dark .v33e-t tbody tr:hover td{background:#1f3249}body.v14-dark .v33e-t tbody tr.v33e-on td,body.v14-dark .v33e-t tbody tr.v33e-on:hover td{background:#2c5f9e!important;color:#fff!important;border-bottom-color:#2a5489;border-right-color:#3a6fb0}body.v14-dark .v33e-rc{color:#9cb8da}body.v14-dark .v33e-rc:hover{color:#fff}body.v14-dark .v33e-foot{background:#1a2431;border-color:#2b3b4d;color:#cfd9e6}body.v14-dark .v33e-foot i{background:#17212d;border-color:#2b3b4d}body.v14-dark .v33e-scroll::-webkit-scrollbar-thumb{border-color:#17212d;background:#3b4d63}`;document.head.append(st);})();
 
 /* Total price line in the work order description follows the Services Performed total */
-(function(){const prev=woRefreshDraft;woRefreshDraft=function(){const r=prev.apply(this,arguments);try{const ta=document.querySelector('#departmentForm textarea[name="problem"]');if(ta&&/^[ \t]*TOTAL PRICE:/im.test(ta.value)){const tot=money(woDraftLines.reduce((n,l)=>n+num(l.qty)*num(l.rate),0));const nv=ta.value.replace(/^([ \t]*TOTAL PRICE:).*$/im,'$1 '+tot);if(nv!==ta.value){ta.value=nv;ta.dispatchEvent(new Event('input',{bubbles:true}));}}}catch(e){}return r;};})();
+(function(){const prev=woRefreshDraft;woRefreshDraft=function(){const r=prev.apply(this,arguments);try{const ta=document.querySelector('#departmentForm textarea[name="problem"]');if(ta&&/^[ \t]*TOTAL PRICE:/im.test(ta.value)){const tot=money(woDraftLines.reduce((n,l)=>n+num(l.qty)*num(l.rate),0));const nv=ta.value.replace(/^([ \t]*TOTAL PRICE:)(.*)$/im,(m0,a,r)=>{r=r.trim();const q=/\$?\s*\d[\d,]*(?:\.\d+)?/.exec(r);if(q)return a+' '+(r.slice(0,q.index)+tot+r.slice(q.index+q[0].length)).trim();return a+' '+(r?tot+' '+r:tot);});if(nv!==ta.value){ta.value=nv;ta.dispatchEvent(new Event('input',{bubbles:true}));}}}catch(e){}return r;};})();
 
 /* ===== Report tabs: compact toolbar, typeable dates, saved mileage history ===== */
 (function(){
@@ -10986,7 +10986,7 @@ body.v14-dark .v33tabs{background:#1a2431;border-color:#2b3b4d}body.v14-dark .v3
  v8ReportFrame=function(kind){const r=prevF.apply(this,arguments);if(kind!=='maintreports')return r;const v=ST().view||'expense';const t=document.createElement('template');t.innerHTML=r;const c=t.content;
   if(v==='report'){c.querySelectorAll('.v33-copy').forEach(b=>{b.className='v33e-ic v33e-cb';b.title='Copy report';b.setAttribute('aria-label','Copy report');b.innerHTML=V33L_IC;});c.querySelectorAll('.v33-top').forEach(x=>x.remove());const s=ST();if(!(s.rbar===undefined?!s.done:s.rbar)){const b=c.querySelector('.v33-bar');if(b)b.remove();}}
   if(v==='expense'){const s=ST(),tl=c.querySelector('.v33tl'),rt=c.querySelector('.v33e-rt'),bar=c.querySelector('.v33e-bar');
-   if(tl&&rt){const kp=rt.querySelector('.v33e-kp');if(kp){const tr=s.xeq==='Trailer',sh=i=>us(i).slice(0,5);kp.insertAdjacentHTML('afterbegin','<em class="v33e-sm">'+(tr?'Trailers':'Trucks')+' · '+sh(s.from)+' – '+sh(s.to)+'</em>');tl.prepend(kp);}
+   if(tl&&rt){const kp=rt.querySelector('.v33e-kp');if(kp){const sp=kp.querySelector('span');if(sp){const nn=c.querySelectorAll('tr.v33e-on').length;sp.textContent=sp.textContent.replace(/^(\d+) work orders?$/,'$1 record(s)');sp.insertAdjacentHTML('afterend','<em class="v33e-ns" '+(nn?'':'hidden')+'>'+nn+' selected</em>');}const tq=document.createElement('span');tq.className='v33tq';tq.innerHTML='<label class="v33-qb">Search: <input class="v33-q" type="text" autocomplete="off" spellcheck="false" value="'+esc(s.xq||'')+'" oninput="TMSV33H.q(this)"></label>';tq.append(kp);tl.parentNode.insertBefore(tq,tl);}
     [...rt.children].forEach(x=>{if(x!==kp)tl.append(x);});rt.remove();}
    if(bar&&!s.xbar)bar.remove();}
   if(v!=='mileage')fix(c);return t.innerHTML;};
@@ -10997,6 +10997,19 @@ body.v14-dark .v33tabs{background:#1a2431;border-color:#2b3b4d}body.v14-dark .v3
  window.v33Toast=function(btn,t){try{const r=btn.getBoundingClientRect(),d=document.createElement('div');d.className='v33-toast';d.textContent=t;document.body.append(d);d.style.left=Math.max(6,Math.min(innerWidth-d.offsetWidth-6,r.left+r.width/2-d.offsetWidth/2))+'px';d.style.top=(r.bottom+6)+'px';setTimeout(()=>d.classList.add('out'),1100);setTimeout(()=>d.remove(),1500);}catch(e){}};
  TMSV33M.flash=function(b,t){if(!b)return;if(b.classList.contains('v33e-ic')){b.classList.add('ok');setTimeout(()=>b.classList.remove('ok'),900);v33Toast(b,t==='Copied!'?(String(b.title||'Copy').replace(/^Copy\s*/i,'')+' copied').replace(/^./,c=>c.toUpperCase()):(t==='Saved'?'Picture saved':t));return;}const o=b.textContent;b.textContent=t;setTimeout(()=>{b.textContent=o;},1300);};
  {const oc=TMSV31.copy;TMSV31.copy=function(kind,btn){if(kind==='maintreports'&&btn&&btn.classList.contains('v33e-ic')){oc.call(this,kind,null);btn.classList.add('ok');setTimeout(()=>btn.classList.remove('ok'),900);v33Toast(btn,'Report copied');return;}return oc.apply(this,arguments);};}
+
+ // ---- records, search and selected count in the expense toolbar; drag to select rows ----
+ window.__v33clr=()=>{try{const s=ST();s.xsel=[];s.xlast=null;}catch(e){}};window.v33eUi=n=>{try{const tb=document.getElementById('v33eTbl'),fs=document.querySelector('.v33e-fs');if(tb&&fs){let t=0;tb.querySelectorAll('tbody tr.v33e-on td[data-k="total"]').forEach(td=>{t+=parseFloat(td.textContent.replace(/[^0-9.\-]/g,''))||0;});fs.hidden=!n;fs.innerHTML='Selected '+n+' <b>'+t.toLocaleString('en-US',{style:'currency',currency:'USD'})+'</b>';}}catch(e){}document.querySelectorAll('.v33e-ns').forEach(e=>{e.hidden=!n;e.textContent=n+' selected';});[['v33eTb','Copy selected rows as a table','Copy table'],['v33ePs','Copy picture of selected rows','Copy picture']].forEach(([i,t1,t0])=>{const bt=document.getElementById(i);if(!bt)return;bt.title=n?t1:t0;const bd=bt.querySelector('.bd');if(bd){bd.hidden=!n;bd.textContent=n;}});};
+ {const o=v33eRows;v33eRows=function(s){const r=o.apply(this,arguments);const q=String((s&&s.xq)||'').trim().toLowerCase();if(!q)return r;return r.filter(x=>[x.id,x.truck,x.trailer,x.driver,x.shop,x.loc,x.rep,x.phone,x.rp,x.issue,v33eUs(x.date),v33eUs(x.open),x.total].join(' ').toLowerCase().includes(q));};}
+ {let st=null,drag=false;
+  const rowAt=(rows,y)=>{let best=rows[0],bd=1e9;for(const r of rows){const b=r.getBoundingClientRect();if(y>=b.top&&y<=b.bottom)return r;const d=Math.min(Math.abs(y-b.top),Math.abs(y-b.bottom));if(d<bd){bd=d;best=r;}}return best;};
+  document.addEventListener('mousedown',e=>{st=null;drag=false;if(e.button!==0||e.ctrlKey||e.metaKey||e.shiftKey)return;const t=e.target;if(!t||!t.closest||t.closest('button,input,select,a,th,.rz'))return;const tr=t.closest('#v33eTbl tbody tr[data-id]');if(!tr)return;const rows=[...tr.parentElement.querySelectorAll('tr[data-id]')];st={tr,rows,i:rows.indexOf(tr),y:e.clientY,sc:tr.closest('.v33e-scroll')};},true);
+  document.addEventListener('mousemove',e=>{if(!st)return;if(!(e.buttons&1)){st=null;return;}if(!drag){if(Math.abs(e.clientY-st.y)<5)return;drag=true;}
+   if(st.sc){const b=st.sc.getBoundingClientRect();if(e.clientY<b.top+30)st.sc.scrollTop-=18;else if(e.clientY>b.bottom-30)st.sc.scrollTop+=18;}
+   const cur=rowAt(st.rows,e.clientY),j=st.rows.indexOf(cur),a=Math.min(st.i,j),z=Math.max(st.i,j),ids=st.rows.slice(a,z+1).map(r=>r.dataset.id),s=ST();
+   s.xsel=ids;s.xlast=st.tr.dataset.id;const set=new Set(ids);st.rows.forEach(r=>r.classList.toggle('v33e-on',set.has(r.dataset.id)));v33eUi(ids.length);try{getSelection().removeAllRanges();}catch(x){}e.preventDefault();},true);
+  document.addEventListener('mouseup',()=>{if(drag)window.__v33drag=Date.now();st=null;drag=false;},true);
+ }
  // ---- saved mileage history ----
  const hist=()=>{if(!db.mileHist||typeof db.mileHist!=='object')db.mileHist={};return db.mileHist;};
  const liveRows=v33mRows,liveDate=v33mDate;
@@ -11010,7 +11023,8 @@ body.v14-dark .v33tabs{background:#1a2431;border-color:#2b3b4d}body.v14-dark .v3
   tog(){const s=ST();s.mhOpen=!s.mhOpen;if(!s.mhOpen)s.mh='';v5Rerender('maintreports');},
   set(iso){ST().mh=(iso&&iso<today())?iso:'';v5Rerender('maintreports');},
   bar(w){const s=ST();if(w==='x')s.xbar=!s.xbar;else s.rbar=!(s.rbar===undefined?!s.done:s.rbar);v5Rerender('maintreports');},
-  refresh(){snap();v5Rerender('maintreports');}
+  q(el){clearTimeout(this._t);const v=el.value,pos=el.selectionStart;this._t=setTimeout(()=>{const s=ST();s.xq=v;s.xsel=[];v5Rerender('maintreports');setTimeout(()=>{const n=document.querySelector('.v33-q');if(n){n.focus();try{n.setSelectionRange(pos,pos);}catch(e){}}},0);},180);},
+  refresh(){snap();const s=ST();s.xsel=[];s.xlast=null;v5Rerender('maintreports');}
  };
  v33mView=function(){const s=ST();snap();const dt=v33mDate();
   const blk=g=>{const rows=v33mRows(g),ti=v33mTitle(g);
@@ -11023,7 +11037,10 @@ body.v14-dark .v33tabs{background:#1a2431;border-color:#2b3b4d}body.v14-dark .v3
    bar=`<div class="v33h-bar"><b>History</b>${chip('Today','')}${chip('Yesterday',ago(1))}${chip('1 week ago',ago(7))}${chip('1 month ago',ago(1,'m'))}${field(s.mh||'','TMSV33H.set(this.value)')}<span class="v33h-n">${esc(note)}</span></div>`;}
   return `<div class="v33">${v33Tabs('mileage')}${bar}<div class="v33m-wrap" data-dt="${dt}">${blk('P')}${blk('R')}</div></div>`;};
  const st=document.createElement('style');st.textContent=`
-.v33tabs{align-items:flex-end}.v33tabs{flex-wrap:wrap}.v33tl{margin-left:auto;display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:center;gap:2px;padding:0 0 3px}.v33tl .v33e-kp{flex-direction:row;align-items:baseline;gap:7px;margin:0 8px 0 0;white-space:nowrap}.v33tl .v33e-kp b{font-size:14px}.v33e-sm{font-style:normal;color:#6b7683}body.v14-dark .v33e-sm{color:#9fb3c8}.v33tl .v33e-ig{display:inline-flex}.v33tl .v33e-ic.hon{color:#2f6fb5}
+.v33tabs{align-items:flex-end}.v33tabs{flex-wrap:wrap}.v33tl{margin-left:auto;display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:center;gap:2px;padding:0 0 3px}.v33tl .v33e-kp{flex-direction:row;align-items:baseline;gap:7px;margin:0 8px 0 0;white-space:nowrap}.v33tl .v33e-kp b{font-size:14px}.v33e-ns{font-style:normal;color:#2f6bd1}body.v14-dark .v33e-ns{color:#8db8f5}.v33-qb{font:11px Tahoma,Arial,sans-serif;color:#555;display:inline-flex;align-items:center;gap:4px;margin-right:8px}.v33-q{height:22px;width:120px;border:1px solid #cfd6de;border-radius:3px;padding:0 6px;font:12px Tahoma,Arial,sans-serif;background:#fff;color:#26303b}body.v14-dark .v33-qb{color:#9fb3c8}body.v14-dark .v33-q{background:#192431;color:#e6eef7;border-color:#4a607a}.v33e-foot{gap:4px 14px!important;padding:4px 12px!important}.v33e-foot i{background:none!important;border:0!important;padding:0!important;color:#444}.v33e-foot i b{font-weight:600}.v33e-fr{margin-left:auto;display:inline-flex;gap:16px;align-items:baseline}.v33e-fr em{font-style:normal;white-space:nowrap}.v33e-fr b{color:#1f4f87;font-size:13px}.v33e-fs{color:#2f6bd1}body.v14-dark .v33e-fr b{color:#8fb8ea}body.v14-dark .v33e-foot i{color:#cfd9e6}body.v14-dark .v33e-fs{color:#8db8f5}
+.v33tabs,body.v14-dark .v33tabs{background:transparent!important;border:0!important;padding:3px 10px 0!important;gap:0!important}.v33tab,body.v14-dark .v33tab{background:transparent!important;border:0!important;border-bottom:2px solid transparent!important;border-radius:0!important;padding:3px 11px 2px!important;margin:0 !important;font-size:12px!important;color:#555!important}.v33tab:hover{color:#1f4f87!important}.v33tab.on,body.v14-dark .v33tab.on{border-bottom-color:#2f6bd1!important;color:#1b1b1b!important;font-weight:bold}body.v14-dark .v33tab{color:#9fb3c8!important}body.v14-dark .v33tab.on{color:#fff!important;border-bottom-color:#6ea4ee!important}
+.v9-detail-bar button.v28-ibtn{min-width:34px!important;height:32px!important}.v9-detail-bar button.v28-ibtn svg{width:24px!important;height:24px!important}
+.v33tq{display:inline-flex;align-items:center;gap:6px;margin:0 0 3px 14px;flex:none}.v33tq .v33e-kp{flex-direction:row;align-items:baseline;gap:7px;margin:0;white-space:nowrap}.v33tq .v33e-kp b{font-size:14px}.v33e-sm{font-style:normal;color:#6b7683}body.v14-dark .v33e-sm{color:#9fb3c8}.v33tl .v33e-ig{display:inline-flex}.v33tl .v33e-ic.hon{color:#2f6fb5}
 .v33d{display:inline-flex;align-items:center;position:relative;height:24px;border:1px solid #cfd6de;border-radius:3px;background:#fff}
 .v33d .v33d-t{border:0!important;outline:0;background:transparent!important;height:22px!important;width:84px;padding:0 4px 0 6px!important;font:12px Tahoma,Arial,sans-serif!important;color:#26303b;box-sizing:border-box}
 .v33d .v33d-b{border:0!important;background:none!important;box-shadow:none!important;padding:0 5px;height:22px;display:inline-flex;align-items:center;color:#5a6b7e;cursor:pointer}.v33d .v33d-b:hover{color:#2f6fb5}
@@ -11036,6 +11053,86 @@ body.v14-dark .v33d{background:#192431;border-color:#4a607a}body.v14-dark .v33d 
 body.v14-dark .v33h-bar{background:#17212d;border-color:#2b3b4d;color:#e8eef5}body.v14-dark .v33h-n{color:#9fb3c8}`;document.head.append(st);
 })();
 
+
+/* ===== Custom split of a work order between two parties (50/50, by percent, by amount) ===== */
+const V72S={even:/^50\/50:\s*(.+?)\s\+\s(.+)$/,pct:/^Split\s+(\d+(?:\.\d+)?)\/(\d+(?:\.\d+)?):\s*(.+?)\s\+\s(.+)$/,amt:/^Split\s+\$(\d+(?:\.\d+)?):\s*(.+?)\s\+\s(.+)$/};
+function v72Info(rp){rp=String(rp||'').trim();let m;if(m=V72S.even.exec(rp))return{t:'even',a:m[1].trim(),b:m[2].trim()};if(m=V72S.pct.exec(rp))return{t:'pct',x:+m[1],y:+m[2],a:m[3].trim(),b:m[4].trim()};if(m=V72S.amt.exec(rp))return{t:'amt',x:+m[1],a:m[2].trim(),b:m[3].trim()};return null;}
+v72Split=function(rp){const i=v72Info(rp);return i?[i.a,i.b]:null;};
+v72Parts=function(rp,amount){const i=v72Info(rp);if(!i)return null;const cents=Math.round((Number(amount)||0)*100);let c1;if(i.t==='even')c1=Math.ceil(cents/2);else if(i.t==='pct')c1=Math.round(cents*i.x/((i.x+i.y)||100));else c1=Math.min(cents,Math.round(i.x*100));return [[i.a,c1/100],[i.b,(cents-c1)/100]];};
+function v33eRpList(rows){const m=new Map();rows.forEach(r=>{const parts=v72Parts(r.rp,r.total);(parts||[[r.rp||'Unassigned',r.total]]).forEach(([k,a])=>{const o=m.get(k)||{n:0,t:0};o.n++;o.t+=a;m.set(k,o);});});return [...m.entries()].sort((a,b)=>b[1].t-a[1].t);}
+v72Pick=function(cur,cb,onCancel){
+ const inf=v72Info(cur)||{t:'even',a:'Company',b:'Driver'};const list=v72PartyList();[inf.a,inf.b].forEach(n=>{if(!list.includes(n))list.push(n);});
+ const tf=document.querySelector('form.wo-form #woDraftTotal');const tot=tf?num(String(tf.textContent).replace(/[^0-9.\-]/g,'')):0;
+ const opt=v=>list.map(x=>`<option value="${esc(x)}" ${x===v?'selected':''}>${esc(x)}</option>`).join('')+'<option value="__other__">Other (type a name)…</option>';
+ const sh=document.createElement('div');sh.className='v11-shade v44-shade';sh.style.zIndex=3700000;
+ sh.innerHTML=`<div class="v11-confirm v44-card v72-card" role="dialog" aria-modal="true"><div class="v11-confirm-title">Custom Split</div><div class="v44-body">
+ <div class="v72-row"><label>Party 1<select class="v72-sel" id="v72A">${opt(inf.a)}</select><input class="v44-input v72-oth" id="v72AT" style="display:none"></label></div>
+ <div class="v72-row"><label>Party 2<select class="v72-sel" id="v72B">${opt(inf.b)}</select><input class="v44-input v72-oth" id="v72BT" style="display:none"></label></div>
+ <div class="v72-row"><label>Split<select class="v72-sel" id="v72M"><option value="even">Even, 50 / 50</option><option value="pct">By percent</option><option value="amt">By amount ($)</option></select></label></div>
+ <div class="v72-row" id="v72P" style="display:none"><label>Party 1 pays <input class="v44-input" id="v72X" inputmode="decimal" style="width:70px"> %&nbsp; Party 2 pays <b id="v72Y"></b> %</label></div>
+ <div class="v72-row" id="v72D" style="display:none"><label>Party 1 pays $ <input class="v44-input" id="v72A1" inputmode="decimal" style="width:90px">&nbsp; Party 2 pays $ <input class="v44-input" id="v72A2" inputmode="decimal" style="width:90px"></label><div class="v72-tt" id="v72T"></div></div>
+ <div class="v72-err" id="v72E"></div></div><div class="v11-confirm-buttons"><button type="button" class="v44-no">Cancel</button><button type="button" class="v44-yes">Apply</button></div></div>`;
+ const q=i=>sh.querySelector('#'+i);
+ const wire=(s,t)=>q(s).addEventListener('change',()=>{const o=q(s).value==='__other__';q(t).style.display=o?'':'none';if(o)q(t).focus();});wire('v72A','v72AT');wire('v72B','v72BT');
+ const val=(s,t)=>{const v=q(s).value;return (v==='__other__'?q(t).value:v).trim();};
+ const fx=n=>String(+(+n).toFixed(2));
+ const mode=()=>q('v72M').value;
+ const show=()=>{q('v72P').style.display=mode()==='pct'?'':'none';q('v72D').style.display=mode()==='amt'?'':'none';};
+ q('v72M').value=inf.t;if(inf.t==='pct'){q('v72X').value=fx(inf.x);}else q('v72X').value='40';
+ q('v72Y').textContent=fx(100-(+q('v72X').value||0));
+ if(inf.t==='amt'){q('v72A1').value=fx(inf.x);if(tot>0)q('v72A2').value=fx(Math.max(0,tot-inf.x));}
+ q('v72T').textContent=tot>0?'Work order total: '+money(tot):'Party 2 pays the rest of the total.';
+ q('v72M').addEventListener('change',show);show();
+ q('v72X').addEventListener('input',()=>{q('v72Y').textContent=fx(Math.max(0,100-(+q('v72X').value||0)));});
+ q('v72A1').addEventListener('input',()=>{if(tot>0)q('v72A2').value=fx(Math.max(0,tot-(+q('v72A1').value||0)));});
+ q('v72A2').addEventListener('input',()=>{if(tot>0)q('v72A1').value=fx(Math.max(0,tot-(+q('v72A2').value||0)));});
+ const done=ok=>{if(ok){const a=val('v72A','v72AT'),b=val('v72B','v72BT');const err=m=>{q('v72E').textContent=m;};
+   if(!a||!b)return err('Choose both parties.');if(a.toLowerCase()===b.toLowerCase())return err('Pick two different parties.');
+   let lbl;if(mode()==='even')lbl=v72Label(a,b);
+   else if(mode()==='pct'){const x=+q('v72X').value;if(!(x>0&&x<100))return err('Percent must be between 0 and 100.');lbl='Split '+fx(x)+'/'+fx(100-x)+': '+a+' + '+b;}
+   else{const x=+q('v72A1').value;if(!(x>0))return err('Enter the amount Party 1 pays.');if(tot>0&&x>tot+0.005)return err('That is more than the work order total.');lbl='Split $'+fx(x)+': '+a+' + '+b;}
+   sh.remove();document.removeEventListener('keydown',key,true);cb(lbl);return;}
+  sh.remove();document.removeEventListener('keydown',key,true);if(onCancel)onCancel();};
+ const key=e=>{if(e.key==='Escape'){e.preventDefault();done(false);}};
+ sh.querySelector('.v44-no').onclick=()=>done(false);sh.querySelector('.v44-yes').onclick=()=>done(true);
+ document.addEventListener('keydown',key,true);document.body.appendChild(sh);
+};
+v72Notes=function(){document.querySelectorAll('form.wo-form').forEach(f=>{const tot=f.querySelector('#woDraftTotal'),sel=f.querySelector('select[name="responsibleParty"]');if(!tot)return;
+  let n=f.querySelector('.v72-note');const sp=sel&&v72Split(sel.value);
+  if(!sp){if(n)n.remove();return;}
+  const amt=num(String(tot.textContent).replace(/[^0-9.\-]/g,''));const p=v72Parts(sel.value,amt);
+  const html=`<b>Split</b> · ${esc(p[0][0])} pays ${money(p[0][1])} · ${esc(p[1][0])} pays ${money(p[1][1])}`;
+  if(!n){n=document.createElement('div');n.className='v72-note';tot.after(n);}
+  if(n.innerHTML!==html)n.innerHTML=html;});};
+
+/* ===== Files & Media: the file opens in a sister window beside the file list ===== */
+v30Viewer=function(key,file,download){
+ const win=mdiWindows.get(key);if(!win||!file)return;
+ const vk='fview~'+key,dsk=mdiDesktop(),DW=dsk.clientWidth,DH=dsk.clientHeight,gap=2;
+ let vw=mdiWindows.get(vk);
+ if(!vw){
+  if(!win.v30prev)win.v30prev={left:parseFloat(win.el.style.left)||0,top:parseFloat(win.el.style.top)||0,width:parseFloat(win.el.style.width)||0,height:parseFloat(win.el.style.height)||0};
+  const H=Math.min(DH-4,Math.max(win.v30prev.height,620));let fw=Math.min(win.v30prev.width||520,Math.max(360,Math.floor(DW*.42)));let vwid=Math.min(1000,DW-6-fw-gap);if(vwid<420){vwid=420;fw=Math.max(340,DW-6-420-gap);}
+  const L=Math.max(0,Math.floor((DW-(fw+gap+vwid))/2)),T=Math.max(0,Math.floor((DH-H)/2));
+  mdiSetRect(win,{left:L,top:T,width:fw,height:H});
+  vw=mdiCreate(vk,file.name||'File','<div class="v30-viewer"></div>',{owner:win.owner,kind:'viewer',width:vwid,height:H});
+  mdiSetRect(vw,{left:L+fw+gap,top:T,width:vwid,height:H});
+ }
+ const t=vw.el.querySelector('.mdi-title-text span:last-child');if(t)t.textContent=file.name||'File';
+ const host=vw.el.querySelector('.mdi-content');host.style.position='relative';host.innerHTML='';
+ const v=document.createElement('div');v.className='v30-viewer';
+ v.innerHTML='<div class="v30-vbar"><b class="v30-vname"></b><button type="button" class="v30-vdl v30-fa v30-fa-dl" title="Download">'+DLICON+'</button></div><div class="v30-vbody"></div>';
+ v.querySelector('.v30-vname').textContent=file.name||'File';
+ const body=v.querySelector('.v30-vbody'),url=file.data||'',mime=file.type||'';
+ if(!url)body.innerHTML='<div class="v30-vmsg">File content is unavailable.</div>';
+ else if(mime.startsWith('image/')){const i=document.createElement('img');i.src=url;i.alt=file.name||'';body.append(i);}
+ else if(mime.startsWith('video/')){const i=document.createElement('video');i.src=url;i.controls=true;body.append(i);}
+ else if(mime==='application/pdf'){const f=document.createElement('iframe');f.title=file.name||'PDF';f.src=url+'#zoom=page-fit&navpanes=0';body.append(f);}
+ else body.innerHTML='<div class="v30-vmsg">No built-in preview for this file type. Use the download icon to open it.</div>';
+ v.querySelector('.v30-vdl').addEventListener('click',()=>{try{download();}catch(e){}});
+ host.append(v);try{mdiFocus(vk);}catch(e){}
+};
+{const oc=mdiTryClose;mdiTryClose=function(k){const r=oc.apply(this,arguments);try{if(!mdiWindows.has(k)){if(mdiWindows.has('fview~'+k))oc('fview~'+k,true);if(String(k).startsWith('fview~')){const b=mdiWindows.get(String(k).slice(6));if(b&&b.v30prev){mdiSetRect(b,b.v30prev);b.v30prev=null;}}}}catch(e){}return r;};}
 /*v35 marker*/
 /* a completed work order window must not redraw (flicker) when the background sync finds nothing new */
 {
@@ -11072,14 +11169,14 @@ function v35DrvField(form,respI,idI,probI){
  const wo=(db.workorders||[]).find(w=>String(w.id)===String(idI&&idI.value))||{};
  const d=document.createElement('div');d.className='wo-field v35-drv';
  d.innerHTML='<label>Driver</label><span class="v35d"><input class="v35d-in" name="chargeDriver" list="v35DrvDl" autocomplete="off" spellcheck="false" value="'+esc(wo.chargeDriver||'')+'" oninput="TMSV35D.input(this)" onchange="TMSV35D.change(this)" onfocus="TMSV35D.dl()"><input type="hidden" name="chargeDriverId" value="'+esc(wo.chargeDriverId||'')+'"><input type="hidden" name="chargeDriverManual" value="'+(wo.chargeDriverManual?'1':'')+'"><button type="button" class="v35d-add" hidden onclick="TMSV35D.add(this)">+ HR</button></span>';
- const vis=()=>{d.style.display=respI&&respI.value==='Driver'?'':'none';};vis();
+ const vis=()=>{if(respI&&respI.value==='Driver')d.style.removeProperty('display');else d.style.setProperty('display','none','important');};vis();
  const man=()=>d.querySelector('[name=chargeDriverManual]'),inp=()=>d.querySelector('.v35d-in');
  const fill=()=>{if(man().value==='1'||!respI||respI.value!=='Driver')return;const r=v35DrvResolve(v35DrvFromText(probI.value));if(!r)return;const el=inp();if(el.value===r.name)return;el.value=r.name;d.querySelector('[name=chargeDriverId]').value=r.id;d.querySelector('.v35d-add').hidden=!!r.id;el.dispatchEvent(new Event('change',{bubbles:true}));};
  if(respI){respI.addEventListener('change',()=>{vis();fill();});respI.addEventListener('input',vis);}
  let tm=0;if(probI){const q=()=>{clearTimeout(tm);tm=setTimeout(fill,400);};probI.addEventListener('input',q);probI.addEventListener('change',q);}
  setTimeout(()=>{try{fill();TMSV35D.dl();TMSV35D.chk(inp());}catch(e){}},0);
  return d;}
-(function(){const st=document.createElement('style');st.textContent=`.v35d{display:flex;gap:4px;align-items:center;width:100%;min-width:0}.v35d .v35d-in{flex:1;min-width:0}.v29-grid .v29-row .v35d-in{background:#fff;border:1px solid #a9a9a9;height:21px;padding:0 4px;font:11px Tahoma,Arial,sans-serif;box-sizing:border-box;color:#000}.v35d-add{border:1px solid #a9a9a9;background:#fff;color:#1f4f87;font:10px Tahoma,Arial,sans-serif;height:21px;padding:0 5px;cursor:pointer;white-space:nowrap;flex:none}.v35d-add[hidden]{display:none}.v35d-add:hover{background:#eef3f9}body.v14-dark .v29-grid .v29-row .v35d-in{background:#1d2a38;color:#e8eef7;border-color:#65798a}body.v14-dark .v35d-add{background:#223042;color:#8fb8ea;border-color:#65798a}`;document.head.append(st);})();
+(function(){const st=document.createElement('style');st.textContent=`.v35d{display:flex;gap:4px;align-items:center;width:100%;min-width:0}.v35d .v35d-in{flex:1;min-width:0}.v29-grid .v29-row .v35d-in{background:#fff;border:1px solid #a9a9a9;height:21px;padding:0 4px;font:11px Tahoma,Arial,sans-serif;box-sizing:border-box;color:#000}.v35d-add{border:1px solid #a9a9a9;background:#fff;color:#1f4f87;font:10px Tahoma,Arial,sans-serif;height:21px;padding:0 5px;cursor:pointer;white-space:nowrap;flex:none}.v35d-add[hidden]{display:none}#v72P label,#v72D label{display:flex!important;flex-direction:row!important;align-items:center;gap:6px;flex-wrap:wrap}.v72-tt{font-size:11px;color:#6b7683;margin-top:4px}.v35d-add:hover{background:#eef3f9}body.v14-dark .v29-grid .v29-row .v35d-in{background:#1d2a38;color:#e8eef7;border-color:#65798a}body.v14-dark .v35d-add{background:#223042;color:#8fb8ea;border-color:#65798a}`;document.head.append(st);})();
 let v29Stash=null;
 function v29AddUnit(form){
  const {kind}=v29UnitList(form);const unit=(form.querySelector('input[name="unit"]')?.value||'').trim();if(!unit)return;
@@ -11177,13 +11274,13 @@ v9DetailsHtml=function(wo){
  const u=(typeof v9WoUnitObject==='function'?v9WoUnitObject(wo):null)||{};
  const done=wo.status==='Completed';
  const R=(k,v)=>`<div class="v29-row"><span class="k">${esc(k)}</span><span class="v29-ro" title="${esc(v)}">${esc(v)}</span></div>`;
- const sum=[['WO No',wo.id],['PO No',wo.po||''],['Completed',done?'Yes':'No'],['Memorized','Yes'],['Total',money(woTotal(wo))]];
+ const sum=[['WO No',wo.id],['Company',((typeof companies!=='undefined'&&companies[activeCompany])||'').split(/\s+/)[0]],['Completed',done?'Yes':'No'],['Memorized','Yes'],['Total',money(woTotal(wo))]];
  const lines=(wo.lines||[]).map((l,i)=>{
   const cat=(typeof v19Category==='function'?v19Category(l.service||l.description||l.code):(l.code||''));
   const notes=[l.serviceDate?'Service date: '+v19Date(l.serviceDate):'',l.nextDue?'Next due: '+v19Date(l.nextDue):''].filter(Boolean).join(' · ');
   return `<tr><td class="c">${i+1}</td><td class="c">${esc(l.serviceDate?v19Date(l.serviceDate):d(wo.opened))}</td><td>${esc(cat)}</td><td class="w">${esc(l.description||'')}</td><td class="n">${money(num(l.qty)*num(l.rate))}</td><td class="c">${done?'Yes':''}</td><td class="w">${esc(notes)}</td></tr>`;
  }).join('');
- const html=`<div class="v9-detail-body v29-ro-wrap"><div class="v29-top"><div class="v29-left"><div class="v29-box"><div class="v29-sum">${sum.map(([k,v])=>`<div><div class="l">${esc(k)}</div><div class="v">${esc(v)}</div></div>`).join('')}</div><div class="v29-grid">${R('WO Date',d(wo.opened))}${R('Serviced By',wo.vendor||'')}${R('Unit Type',v9WoUnitType(wo))}${R('Unit No',wo.unit||'')}${R('Odometer',v9WoUnitType(wo)==='Truck'?String(wo.odom||''):'')}${R('Charge To',wo.driverType||'Unassigned')}${R('Responsible Party',wo.responsibleParty||'')}${wo.responsibleParty==='Driver'?`<div class="v29-row"><span class="k">Driver</span><span class="v35d"><input class="v35d-in" list="v35DrvDl" autocomplete="off" spellcheck="false" value="${esc(wo.chargeDriver||'')}" oninput="TMSV35D.input(this)" onchange="TMSV35D.ro(this,'${esc(wo.id)}')" onfocus="TMSV35D.dl()"><input type="hidden" name="chargeDriverId" value=""><input type="hidden" name="chargeDriverManual" value=""><button type="button" class="v35d-add" ${(wo.chargeDriver&&!v35DrvFind(wo.chargeDriver))?'':'hidden'} onclick="TMSV35D.add(this)">+ HR</button></span></div>`:''}${R('Company',((typeof companies!=='undefined'&&companies[activeCompany])||'').split(/\s+/)[0]).replace('class="v29-row"','class="v29-row" title="'+esc((typeof companies!=='undefined'&&companies[activeCompany])||'')+'"')}</div></div><fieldset class="v29-notes"><legend>Notes</legend><div class="t" style="height:52px">${esc(wo.notes||'')}</div></fieldset></div><fieldset class="v29-desc"><legend>Description of Problem or Condition</legend><div class="t" style="height:190px">${esc(wo.problem||'')}</div></fieldset></div><div class="v29-svc v9-detail-services"><div class="v29-svc-title">Services performed on this work order</div><div class="v29-svc-scroll"><table><thead><tr><th>Svc No</th><th>Date</th><th>Code</th><th>Description</th><th>Cost</th><th>Comp</th><th>Notes</th></tr></thead><tbody>${lines||'<tr><td colspan="7" class="v29-empty">No services entered yet.</td></tr>'}</tbody></table></div></div></div>`;
+ const html=`<div class="v9-detail-body v29-ro-wrap"><div class="v29-top"><div class="v29-left"><div class="v29-box"><div class="v29-sum">${sum.map(([k,v])=>`<div><div class="l">${esc(k)}</div><div class="v">${esc(v)}</div></div>`).join('')}</div><div class="v29-grid">${R('WO Date',d(wo.opened))}${R('Serviced By',wo.vendor||'')}${R('Unit Type',v9WoUnitType(wo))}${R('Unit No',wo.unit||'')}${R('Odometer',v9WoUnitType(wo)==='Truck'?String(wo.odom||''):'')}${R('Charge To',wo.driverType||'Unassigned')}${R('Resp. Party',wo.responsibleParty||'')}${wo.responsibleParty==='Driver'?`<div class="v29-row"><span class="k">Driver</span><span class="v35d"><input class="v35d-in" list="v35DrvDl" autocomplete="off" spellcheck="false" value="${esc(wo.chargeDriver||'')}" oninput="TMSV35D.input(this)" onchange="TMSV35D.ro(this,'${esc(wo.id)}')" onfocus="TMSV35D.dl()"><input type="hidden" name="chargeDriverId" value=""><input type="hidden" name="chargeDriverManual" value=""><button type="button" class="v35d-add" ${(wo.chargeDriver&&!v35DrvFind(wo.chargeDriver))?'':'hidden'} onclick="TMSV35D.add(this)">+ HR</button></span></div>`:''}</div></div><fieldset class="v29-notes"><legend>Notes</legend><div class="t" style="height:52px">${esc(wo.notes||'')}</div></fieldset></div><fieldset class="v29-desc"><legend>Description of Problem or Condition</legend><div class="t" style="height:190px">${esc(wo.problem||'')}</div></fieldset></div><div class="v29-svc v9-detail-services"><div class="v29-svc-title">Services performed on this work order</div><div class="v29-svc-scroll"><table><thead><tr><th>Svc No</th><th>Date</th><th>Code</th><th>Description</th><th>Cost</th><th>Comp</th><th>Notes</th></tr></thead><tbody>${lines||'<tr><td colspan="7" class="v29-empty">No services entered yet.</td></tr>'}</tbody></table></div></div></div>`;
  const t=document.createElement('template');t.innerHTML=html;body.replaceWith(t.content.firstElementChild);
  return dom.innerHTML;
 };
@@ -11265,7 +11362,8 @@ function v29Layout(form){
  // field grid
  const grid=document.createElement('div');grid.className='v29-grid';
  const ro=(k,cls)=>{const d=document.createElement('div');d.className='wo-field';const l=document.createElement('label');l.textContent=k;const v=document.createElement('div');v.className='v29-ro '+cls;d.append(l,v);return d;};
- const order=[field(dateI),field(vendI),typeSel?field(typeSel):ro('Unit Type','v29-utype'),field(unitI),field(odomI),field(chargeI),editing?field(statI):(()=>{const sp=document.createElement('div');sp.className='v32-spacer';return sp;})(),field(respI),v35DrvField(form,respI,idI,probI),field(caseI),field(ctl('completedDate'))];
+ {const cdw=field(ctl('completedDate'));if(cdw){cdw.style.setProperty('display','none','important');form.append(cdw);}}
+ const order=[field(dateI),field(vendI),typeSel?field(typeSel):ro('Unit Type','v29-utype'),field(unitI),field(odomI),field(chargeI),editing?field(statI):(()=>{const sp=document.createElement('div');sp.className='v32-spacer';return sp;})(),field(respI),v35DrvField(form,respI,idI,probI),field(caseI)];
  order.forEach(n=>{if(n)grid.append(n);});
  if(!editing){const sb=field(statI);if(sb){sb.style.display='none';form.append(sb);}}
  if(!typeSel){const t=grid.querySelector('.v29-utype');const lab=(field(unitI)?.querySelector('label')?.textContent||'');if(t)t.textContent=/trailer/i.test(lab)?'Trailer':'Truck';}
@@ -11554,10 +11652,25 @@ document.addEventListener('click',e=>{
  setTimeout(()=>{try{const k=tkey(t);if(!k||!tr.isConnected)return;if(has(tr))store.set(k,{r:rkey(tr),c:SEL.filter(c=>tr.classList.contains(c))});}catch(_){}},0);
 },true);
 window.__v85Clear=()=>{store.clear();};
+const MK=['v114-ms','v33e-on','selected','ref-sel','sel','v80-sel','selected-row','v92-rsel'];
+window.addEventListener('click',e=>{
+ if(e.button||e.ctrlKey||e.shiftKey||e.metaKey)return;
+ const tr=e.target.closest&&e.target.closest('tbody tr');if(!tr)return;const t=tr.closest('table');if(!t||!winOf(t)||!t.tBodies[0])return;
+ if(e.target.closest('input,select,textarea,button,a,label'))return;
+ if(Date.now()-(window.__v33drag||0)<300)return;
+ const mk=r=>MK.some(c=>r.classList.contains(c));
+ if(!mk(tr))return;
+ const on=[...t.tBodies[0].rows].filter(mk);if(on.length<2)return;
+ on.forEach(r=>{MK.forEach(c=>r.classList.remove(c));r.removeAttribute('aria-selected');});
+ store.clear();try{window.__v33clr();window.v33eUi&&window.v33eUi(0);}catch(_){}
+ e.stopImmediatePropagation();e.preventDefault();
+},true);
+window.__v114Save=tb=>{try{tb=tb.closest('table')||tb;const k=tkey(tb);if(!k||!tb.tBodies[0])return;const keys=[...tb.tBodies[0].rows].filter(r=>r.classList.contains('v114-ms')).map(rkey);if(keys.length)store.set(k,{m:keys});}catch(_){}};
 const pend=new Set();let raf=0;
 function fix(t){
  const k=tkey(t);if(!k)return;const s=store.get(k);if(!s||!t.tBodies[0])return;
- const rows=[...t.tBodies[0].rows];const hit=rows.find(r=>rkey(r)===s.r);if(!hit||has(hit))return;
+ const rows=[...t.tBodies[0].rows];
+ if(s.m){rows.forEach(r=>{SEL.forEach(c=>r.classList.remove(c));if(s.m.includes(rkey(r))){r.classList.add('v114-ms');r.setAttribute('aria-selected','true');}});return;}const hit=rows.find(r=>rkey(r)===s.r);if(!hit||has(hit))return;
  rows.forEach(r=>SEL.forEach(c=>r.classList.remove(c)));s.c.forEach(c=>hit.classList.add(c));
 }
 new MutationObserver(ms=>{
