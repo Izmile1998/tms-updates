@@ -1869,7 +1869,7 @@ const ribbonDefs={
  layouts:[],
  fleet:[
   {label:'Safety',items:[['Scan<br>Logs','▦','rb-red',()=>alert('Scan Logs template not built yet.')],['Audit<br>Logs','▤','rb-red',()=>openLogBundle()],['Log<br>Violations','!','rb-red',()=>openLogBundle()],['Driver<br>Compliance','✚','rb-green',()=>alert('Driver Compliance template not built yet.')],['Vehicle<br>Accidents','▲','rb-red',()=>alert('Vehicle Accidents template not built yet.')],['Cargo<br>Claims','↯','rb-cyan',()=>alert('Cargo Claims template not built yet.')],['Safety<br>Reports','📄','rb-gray',()=>alert('Safety Reports template not built yet.')]]},
-  {label:'Maintenance',items:[['Work<br>Orders','🧰','rb-red',()=>mdiOpen('workorders')],['Parts<br>Inventory','◔','rb-gray',()=>mdiOpen('partinventory')],['Truck<br>Services','🚚','rb-blue',()=>mdiOpen('trucks')],['Trailer<br>Services','🚛','rb-blue',()=>mdiOpen('trailers')],['Maintenance<br>Reports','🧾','rb-gray',()=>alert('Maintenance Reports template not built yet.')]]},
+  {label:'Maintenance',items:[['Work<br>Orders','🧰','rb-red',()=>mdiOpen('workorders')],['Truck<br>Services','🚚','rb-blue',()=>mdiOpen('trucks')],['Trailer<br>Services','🚛','rb-blue',()=>mdiOpen('trailers')],['Maintenance<br>Reports','🧾','rb-gray',()=>alert('Maintenance Reports template not built yet.')]]},
   {label:'Fuel',items:[['Trip<br>Sheets','▥','rb-blue',()=>alert('Trip Sheets template not built yet.')],['State<br>Mileage','123','rb-blue',()=>alert('State Mileage template not built yet.')],['Fuel<br>Purchases','⛽','rb-red',()=>alert('Fuel Purchases template not built yet.')],['Fuel/Mileage<br>Taxes','🌐','rb-blue',()=>alert('Fuel/Mileage Taxes template not built yet.')],['Fuel<br>Reports','📄','rb-gray',()=>alert('Fuel Reports template not built yet.')]]}
  ],
  dispatch:[
@@ -2405,7 +2405,7 @@ Object.assign(headings,v8Names);v8CustomModules.forEach(m=>customModules.add(m))
 ribbonDefs.lists=(ribbonDefs.lists||[]).map(g=>({...g,items:g.items.filter(i=>!['Lists Manager','Customers'].includes(i[0].replace(/<br\s*\/?\s*>/gi,' ').trim()))}));
 ribbonDefs.imaging=(ribbonDefs.imaging||[]).map(g=>({...g,items:g.items.filter(i=>!['Scans','Index','Transmit'].includes(i[0].replace(/<br\s*\/?\s*>/gi,' ').trim()))})).filter(g=>g.items.length);
 ribbonDefs.fleet=[
- {label:'Maintenance',items:[['Work<br>Orders','🧰','rb-red',()=>mdiOpen('workorders')],['Parts<br>Inventory','◔','rb-gray',()=>mdiOpen('partinventory')],['Truck<br>Services','🚚','rb-blue',()=>mdiOpen('trucks')],['Trailer<br>Services','🚛','rb-blue',()=>mdiOpen('trailers')],['Maintenance<br>Reports','📄','rb-blue',()=>mdiOpen('maintreports')]]},
+ {label:'Maintenance',items:[['Work<br>Orders','🧰','rb-red',()=>mdiOpen('workorders')],['Truck<br>Services','🚚','rb-blue',()=>mdiOpen('trucks')],['Trailer<br>Services','🚛','rb-blue',()=>mdiOpen('trailers')],['Maintenance<br>Reports','📄','rb-blue',()=>mdiOpen('maintreports')]]},
  {label:'Fuel',items:[['Fuel<br>Purchases','⛽','rb-red',()=>mdiOpen('fuelpurchases')],['Fuel<br>Reports','📄','rb-blue',()=>mdiOpen('fuelreports')]]}
 ];
 ribbonDefs.safety=[
@@ -4092,8 +4092,8 @@ const v19Services=[
  'Towing','Roadside Assistance','Winch Out','Windshield Replacement','Damage Repair',
  'Tire Replacement','Tire Repair','Brake Service','Engine Repair','Transmission Repair',
  'Electrical Repair','Battery Replacement','Jump Start','Air System Repair',
- 'Cooling System Service','Trailer Repair','Lights / Wiring','Alignment','Other Service'
-];
+ 'Cooling System Service','Trailer Repair','Lights / Wiring','Alignment','Other Service','Parts'
+].sort((a,b)=>a.localeCompare(b));
 const v19ScheduledCategories=['Annual DOT Inspection','Cab Card / Registration','Insurance'];
 function v19Category(value){
  const x=String(value||'').trim().toLowerCase();
@@ -9918,7 +9918,7 @@ body.v14-dark .v46f-g input[type=text],body.v14-dark .v46f-g input[type=date],bo
 body.v14-dark .v46-dz{background:#16233a;border-color:#3b4d68;color:#9fb1c7}body.v14-dark .v46-dz.on{color:#d6e0ee}body.v14-dark .v46-dz:hover{background:#1b2d47}
 
 `;const add=()=>document.head.appendChild(st);setTimeout(add,0);window.addEventListener('load',()=>{document.head.appendChild(st);});})();
-const APP_BUILD='1.0.502';
+const APP_BUILD='1.0.504';
 function v87Fill(){const root=document.getElementById('v87Root');if(!root)return;try{v87Dedupe();}catch(e){}const rows=v87Vis();document.getElementById('v87Count').textContent=rows.length+' record(s)';
  root.querySelectorAll('thead [data-k]').forEach(e=>{const on=e.dataset.k===V87.sort.k;e.classList.toggle('v87-on',on);e.classList.toggle('asc',on&&V87.sort.dir===1);e.classList.toggle('desc',on&&V87.sort.dir===-1);e.querySelectorAll('.v87-ar').forEach(x=>x.remove());if(false){const a=document.createElement('b');a.className='v87-ar';a.textContent=V87.sort.dir===1?'▲':'▼';const rz=e.querySelector('.v80-rz');e.insertBefore(a,rz||null);}});
  const v87b=document.getElementById('v87Body');v87b.innerHTML=rows.length?rows.map(v87Row).join(''):`<tr><td colspan="13" class="v80-empty">No drivers${V87.search?' match your search':''}. Click Add, or Import to load a driver list.</td></tr>`;{const seen=new Set();v87b.querySelectorAll('tr[data-id]').forEach(r=>{if(seen.has(r.dataset.id))r.remove();else seen.add(r.dataset.id);});}}
@@ -13146,18 +13146,30 @@ body.v14-dark .tl{background:#141b27;color:#d6e0ee}body.v14-dark .tl-bar{backgro
  const isImg=f=>/^image\//i.test(f.type)||/\.(png|jpe?g|tiff?|bmp|webp)$/i.test(f.name);
  const readDoc=async(f,i)=>{let L=[];try{if(/pdf/i.test(f.type)||/\.pdf$/i.test(f.name)){const pages=await withTO(LI.read(await f.arrayBuffer()),25000);(pages||[]).forEach(p=>p.forEach(l=>L.push(l)));}}catch(e){}
   const scanned=L.join('').replace(/\s/g,'').length<25&&(isImg(f)||/pdf/i.test(f.type)||/\.pdf$/i.test(f.name));
-  if(scanned){try{DD.st=DD.st||[];DD.st[i]='Scanned - reading with AI…';paint();const co=(typeof cloud!=='undefined'&&cloud.company)||'';const pf=await v95Prep(f);const r=await v63Fetch('/ai/inspection/'+encodeURIComponent(co),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({files:[pf],kind:'unitdoc'}),signal:AbortSignal.timeout(90000)});const j=await r.json().catch(()=>({}));const d=j&&j.data;
-    if(r.ok&&d){const us2=iso=>{const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(String(iso||''));return m?m[2]+'/'+m[3]+'/'+m[1]:'';};const t=String(d.type||'');
-     L=[t==='dot'?'ANNUAL VEHICLE INSPECTION REPORT':t==='reg'?'REGISTRATION CAB CARD':'DOCUMENT'];if(d.unit)L.push('UNIT NO. '+d.unit);if(d.vin)L.push('VIN '+d.vin);if(d.plate)L.push('PLATE NO. '+d.plate);
-     if(t==='reg'&&(d.start||d.exp)){L.push('EFFECTIVE DATE   EXPIRATION DATE');L.push((us2(d.start)||'')+'   '+(us2(d.exp)||''));}
-     if(t==='dot'&&(d.date||d.start))L.push('DATE OF INSPECTION '+us2(d.date||d.start));}}catch(e){}}
-  if(scanned&&L.length<2){try{DD.st=DD.st||[];DD.st[i]='Scanned - reading with OCR…';paint();const o=await withTO(ocrDoc(f),90000);if(o&&o.length)L=o;}catch(e){}}return L;};
+  if(scanned){try{DD.st=DD.st||[];DD.st[i]='Scanned - reading…';paint();const o=await withTO(ocrDoc(f),90000);if(o&&o.length)L=o;}catch(e){}}return L;};
  const nameGuess=(k,fn)=>{const N=String(fn||'').toUpperCase().replace(/\.[^.]*$/,''),hit=units(k).filter(u=>String(u.id).length>=3&&new RegExp('(?<![A-Z0-9])'+String(u.id).toUpperCase().replace(/[^A-Z0-9]/g,'')+'(?![A-Z0-9])').test(N.replace(/[^A-Z0-9]+/g,' ').replace(/\s+/g,'  ')));return {unit:hit.length===1?hit[0].id:'',type:/REGIST|CAB\s*CARD/.test(N)?'reg':/\bDOT\b|INSPECT/.test(N)?'dot':''};};
  const handle=async(k,files)=>{files=[...files];if(!files.length)return;DD.kind=k;DD.rows=[];DD.st=[];DD.dupOk=false;DD.reading=true;DD.names=files.map(f=>f.name);const tok=++DD.seq;paint();
-  try{for(let fi=0;fi<files.length;fi++){const f=files[fi];DD.st[fi]='Reading…';paint();const L=await readDoc(f,fi);if(DD.seq!==tok)return;const ng=nameGuess(k,f.name);let type=L.length?typeOf(L):'other';if(type==='other'&&ng.type)type=ng.type;const r={file:f,hash:await sha(f),type,unit:(L.length?findUnit(k,L):'')||ng.unit,start:'',exp:'',name:'',nameEdited:false,cand:L.length?cand(L):{id:'',vin:'',plate:''}};
-   const rg=L.length?regDates(L):{start:'',exp:''},dg=L.length?dotDate(L):'';r.regGuess=rg;r.dotGuess=dg;
-   if(type==='reg'){r.start=rg.start;r.exp=rg.exp;}else if(type==='dot'){r.start=dg;}
-   recalc(r);DD.rows.push(r);}
+  const fails=[];
+  try{for(let fi=0;fi<files.length;fi++){const f=files[fi];DD.st[fi]='Reading…';paint();const L=await readDoc(f,fi);if(DD.seq!==tok)return;const ng=nameGuess(k,f.name),hash=await sha(f);
+   const mk=L=>{let type=L.length?typeOf(L):'other';if(type==='other'&&ng.type)type=ng.type;const r={file:f,hash,type,unit:(L.length?findUnit(k,L):'')||ng.unit,start:'',exp:'',name:'',nameEdited:false,cand:L.length?cand(L):{id:'',vin:'',plate:''}};
+    const rg=L.length?regDates(L):{start:'',exp:''},dg=L.length?dotDate(L):'';r.regGuess=rg;r.dotGuess=dg;
+    if(type==='reg'){r.start=rg.start;r.exp=rg.exp;}else if(type==='dot'){r.start=dg;}return r;};
+   const good=r=>!!r.unit&&r.type!=='other'&&(r.type==='dot'?!!r.start:!!r.exp),score=r=>(r.unit?1:0)+(r.type!=='other'?1:0)+((r.type==='dot'?r.start:r.exp)?1:0);
+   let r=mk(L);
+   if(!good(r)&&(isImg(f)||/pdf/i.test(f.type)||/\.pdf$/i.test(f.name)))fails.push({fi,f,mk,idx:DD.rows.length});
+   if(DD.seq!==tok)return;recalc(r);DD.rows.push(r);}
+  const score=r=>(r.unit?1:0)+(r.type!=='other'?1:0)+((r.type==='dot'?r.start:r.exp)?1:0);
+  if(fails.length&&DD.seq===tok){DD.reading=false;paint();const nf=fails.length;const yes=await ask('Regular scan failed',(nf>1?nf+' files could':'This file could')+' not be read fully.\nUse Claude AI (cloud) to read '+(nf>1?'them':'it')+'?','Use Claude AI','No, I will fill it in');
+   if(DD.seq!==tok)return;
+   if(yes){DD.reading=true;for(const x of fails){DD.st[x.fi]='Asking Claude…';paint();let r=DD.rows[x.idx];if(!r)continue;
+    try{const f=x.f,mk=x.mk,fi=x.fi;const co=(typeof cloud!=='undefined'&&cloud.company)||'';const pf=await v95Prep(f);const rs=await v63Fetch('/ai/inspection/'+encodeURIComponent(co),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({files:[pf],kind:'unitdoc'}),signal:AbortSignal.timeout(90000)});const j=await rs.json().catch(()=>({}));const d=j&&j.data;
+    if(rs.ok&&d){const u2=iso=>{const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(String(iso||''));return m?m[2]+'/'+m[3]+'/'+m[1]:'';};const t=String(d.type||'');
+     const L2=[t==='dot'?'ANNUAL VEHICLE INSPECTION REPORT':t==='reg'?'REGISTRATION CAB CARD':'DOCUMENT'];if(d.unit)L2.push('UNIT NO. '+d.unit);if(d.vin)L2.push('VIN '+d.vin);if(d.plate)L2.push('PLATE NO. '+d.plate);
+     if(t==='reg'&&(d.start||d.exp)){L2.push('EFFECTIVE DATE   EXPIRATION DATE');L2.push((u2(d.start)||'')+'   '+(u2(d.exp)||''));}
+     if(t==='dot'&&(d.date||d.start))L2.push('DATE OF INSPECTION '+u2(d.date||d.start));
+     const r2=mk(L2);if(score(r2)>score(r))r=r2;}}catch(e){}
+    DD.rows[x.idx]=r;}}}
+  DD.rows.forEach(r=>recalc(r));
   const miss=[],seen=new Set();DD.rows.forEach(r=>{if(!r.unit&&r.cand.id&&!seen.has(r.cand.id)&&!units(k).some(u=>u.id===r.cand.id)){seen.add(r.cand.id);miss.push(r.cand);}});
   DD.reading=false;
   if(miss.length){const nm=k==='trucks'?'Truck':'Trailer',lst=miss.map(c=>c.id).join(', ');const yes=await ask(nm+(miss.length>1?'s':'')+' not found',nm+(miss.length>1?'s ':' ')+lst+(miss.length>1?' are':' is')+' not in your system.\nDo you want to add '+(miss.length>1?'them':'it')+'?','Add '+nm.toLowerCase()+(miss.length>1?'s':''),'Skip');
